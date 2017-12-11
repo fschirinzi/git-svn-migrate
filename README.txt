@@ -48,9 +48,9 @@ specify the repository list in tab-delimited format with the first field being
 the name to give the Git repository and the second field being the URL of the
 Subversion repository:
 
-  awesomeProject    svn+ssh://example.org/svn/awesomeProject/repo
-  evilproject     file:///svn/evilProject
-  notthedroidsyourlookingfor  https://example.com/svn/secretProject
+  awesomeProject    svn+ssh://example.org/svn/awesomeProject/repo http://gitlab/group1/awesomeProject
+  evilproject     file:///svn/evilProject http://gitlab/group2/evilproject
+  notthedroidsyourlookingfor  https://example.com/svn/secretProject http://gitlab/user1/notthedroidsyourlookingfor
 
 With this format you can use any name for the final Git repo. In the first
 example above, we're using the second-to-last part of the URL instead of the

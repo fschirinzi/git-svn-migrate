@@ -180,11 +180,14 @@ do
   # Check for 2-field format:  Name [tab] URL
   name=`echo $line | awk '{print $1}'`;
   url=`echo $line | awk '{print $2}'`;
+  newurl=`echo $line | awk '{print $3}'`;
   # Check for simple 1-field format:  URL
-  if [[ $url == '' ]]; then
+  if [[ $newurl == '' ]]; then
+    newurl=url;
     url=$name;
-    name=`basename $url`;
+    name=`basename $url`; 
   fi
+
   # Process each Subversion URL.
   echo >&2;
   echo "At $(date)..." >&2;
@@ -213,33 +216,40 @@ do
 
   # Push to final bare repository and remove temp repository.
   echo "- Pushing to new bare repository..." >&2;
-  # git remote add bare $destination/$name.git;
-  #git config remote.bare.push 'refs/remotes/*:refs/heads/*';
-  #git push bare;
+  git remote add bare $destination/$name.git;
+  git config remote.bare.push 'refs/remotes/*:refs/heads/*';
+  git push bare;
   # Push the .gitignore commit that resides on master.
-  #git push bare master:trunk;
-  #cd $pwd;
-  #rm -r $tmp_destination;
+  git push bare master:trunk;
+  cd $pwd;
+  rm -r $tmp_destination;
 
+  # Add new Remote adress
   # Rename Subversion's "trunk" branch to Git's standard "master" branch.
-  #cd $destination/$name.git;
-  #git branch -m trunk master;
+  cd $destination/$name.git;
+  echo "Adding new Remote[origin]: $newurl"
+  git remote add origin "$newurl"
+  git branch -m trunk master;
 
   # Remove bogus branches of the form "name@REV".
-  #git for-each-ref --format='%(refname)' refs/heads | grep '@[0-9][0-9]*' | cut -d / -f 3- |
-  #while read ref
-  #do
-  #  git branch -D "$ref";
-  #done
+  git for-each-ref --format='%(refname)' refs/heads | grep '@[0-9][0-9]*' | cut -d / -f 3- |
+  while read ref
+  do
+    git branch -D "$ref";
+  done
 
   # Convert git-svn tag branches to proper tags.
-  # echo "- Converting svn tag directories to proper git tags..." >&2;
-  #git for-each-ref --format='%(refname)' refs/heads/tags | cut -d / -f 4 |
-  #while read ref
-  #do
-  #  git tag -a "$ref" -m "Convert \"$ref\" to a proper git tag." "refs/heads/tags/$ref";
-  #  git branch -D "tags/$ref";
-  #done
+  echo "- Converting svn tag directories to proper git tags..." >&2;
+  git for-each-ref --format='%(refname)' refs/heads/tags | cut -d / -f 4 |
+  while read ref
+  do
+    git tag -a "$ref" -m "Convert \"$ref\" to a proper git tag." "refs/heads/tags/$ref";
+    git branch -D "tags/$ref";
+  done
+
+  echo "Pushing repo!"
+  cd $destination/$name.git;
+  git push --all origin
 
   echo "- Conversion completed at $(date)." >&2;
 done < $url_file
