@@ -14,5 +14,4 @@
 #echo "$1 <$1>";
 
 #modified by Francesco Schirinzi
-#echo "http://192.168.117.58/lookupname.php?name=${1}"
-echo $(curl -s -L "http://192.168.117.58/lookupname.php?name=${1}")
+echo $(curl -s -L "http://127.0.0.1/lookupname.php?name=${1}")
