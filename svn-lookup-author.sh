@@ -10,4 +10,9 @@
 #
 # You can modify this script to return whatever you think is appropriate for a
 # given username in your organization.
-echo "$1 <$1>";
+
+#echo "$1 <$1>";
+
+#modified by Francesco Schirinzi
+#echo "http://192.168.117.58/lookupname.php?name=${1}"
+echo $(curl -s -L "http://192.168.117.58/lookupname.php?name=${1}")
