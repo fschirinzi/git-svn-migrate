@@ -204,6 +204,10 @@ do
   echo "- Cloning repository..." >&2;
   git svn clone $url -A $authors_file --authors-prog=$dir/svn-lookup-author.sh --stdlayout --quiet $gitsvn_params $tmp_destination;
 
+  # Delete doc folder
+  cd $tmp_destination;
+  rm -r $tmp_destination/doc
+
   # Create .gitignore file.
   echo "- Converting svn:ignore properties into a .gitignore file..." >&2;
   if [[ $ignore_file != '' ]]; then
