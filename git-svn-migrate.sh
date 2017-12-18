@@ -260,7 +260,7 @@ do
 
   echo "Pushing repo!"
   cd $destination/$name.git;
-  git push --all origin
+  git push --all origin master
 
   echo "- Conversion completed at $(date)." >&2;
 done < $url_file
