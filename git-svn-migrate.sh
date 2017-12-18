@@ -3,8 +3,14 @@
 # Copyright 2010-2011 John Albin Wilkins and contributors.
 # Available under the GPL v2 license. See LICENSE.txt.
 
+# Absolute path to this script, e.g. /home/user/bin/foo.sh
+SCRIPTABSPATH=$(readlink -f "$0")
+# Absolute path this script is in, thus /home/user/bin
+SCRIPTABSPATH=$(dirname "$SCRIPT")
+
+
 script=`basename $0`;
-dir=`pwd`/`dirname $0`;
+dir="${SCRIPTABSPATH}";
 usage=$(cat <<EOF_USAGE
 USAGE: $script --url-file=<filename> --authors-file=<filename> [destination folder]
 \n
