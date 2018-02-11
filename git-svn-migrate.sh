@@ -259,7 +259,7 @@ do
   git push --all origin
 
   #Delete local repo folder
-  rm -r $destination
+  rm -r $destination/$name.git
 
   echo "- Conversion completed at $(date)." >&2;
 done < $url_file
