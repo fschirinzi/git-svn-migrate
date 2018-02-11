@@ -211,13 +211,6 @@ do
   echo "- Cloning repository..." >&2;
   git svn clone $url -A $authors_file --authors-prog=$dir/svn-lookup-author.sh --stdlayout --quiet $gitsvn_params $tmp_destination;
 
-  # Delete doc folder
-  #cd $tmp_destination;
-  #if [ -d "$tmp_destination/doc" ]; then
-  #  rm -r "$tmp_destination/doc"
-  #fi
-  
-
   # Create .gitignore file.
   echo "- Converting svn:ignore properties into a .gitignore file..." >&2;
   if [[ $ignore_file != '' ]]; then
@@ -264,6 +257,9 @@ do
   echo "Pushing repo!"
   cd $destination/$name.git;
   git push --all origin master
+
+  #Delete local repo folder
+  rm -r $destination
 
   echo "- Conversion completed at $(date)." >&2;
 done < $url_file
