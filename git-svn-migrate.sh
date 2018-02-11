@@ -256,7 +256,7 @@ do
 
   echo "Pushing repo!"
   cd $destination/$name.git;
-  git push --all origin master
+  git push --all origin
 
   #Delete local repo folder
   rm -r $destination
